@@ -2,21 +2,15 @@ pipeline {
     agent any
 
     stages {
-        stage('Build & Test') {
+        stage('Build & Run Tests') {
             steps {
-                bat 'mvn clean package'
+                bat 'mvn clean test'
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Deploy to Kubernetes') {
             steps {
-                bat 'docker build -t your-username/java-app .'
-            }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                bat 'docker push your-username/java-app'
+                bat 'kubectl apply -f deployment.yaml'
             }
         }
     }
